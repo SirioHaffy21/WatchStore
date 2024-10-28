@@ -1,0 +1,30 @@
+﻿.ck-editor__editable_inline {
+    min-height: 150px !important;
+}
+a.star {
+    font-size: 24px;
+    color: #f0f1f4;
+    background-color: #f0f1f4;
+    cursor: pointer;
+    line-height: 1;
+    transition: all 0.1s ease;
+}
+
+    a.star.vote-hover {
+        color: yellow;
+    }
+
+    a.star:active {
+        color: yellow;
+    }
+
+    a.star.vote-active {
+        color: yellow;
+    }
+
+.yellow {
+    color: yellow;
+}
+.checked {
+    color: yellow;
+}

@@ -1,0 +1,47 @@
+﻿@model WatchManageStore.Models.Brand
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Create";
+}
+
+<h4>Create Brand</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BrandName" class="control-label"></label>
+                <input asp-for="BrandName" class="form-control" />
+                <span asp-validation-for="BrandName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+               <input type="file" id="file" name="file" multiple onchange="loadFile(event)" class="form-control" accept="image/*" />
+                <img class="m-3" id="output" height="150" width="290" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                 <a class="btn btn-primary" asp-action="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+         var loadFile = function (event) {
+        //hiển thị hình ảnh
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('output');
+            output.src = reader.result;
+            files = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
+    </script>
+}

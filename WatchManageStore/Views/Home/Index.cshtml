@@ -1,0 +1,284 @@
+﻿@using WatchManageStore.Areas.Admin.Models
+@{
+    ViewData["Title"] = "Home Page";
+}
+<!--  Header Start -->
+<!-- Hero Section Start -->
+<div class="hero-slider hero-slider-one">
+
+    <!-- Single Slide Start -->
+    <div class="single-slide" style="background-image: url(/assets/images/slider/slide-bg-2.jpg)">
+        <!-- Hero Content One Start -->
+        <!-- Hero Content One End -->
+    </div>
+    <!-- Single Slide End -->
+    <!-- Single Slide Start -->
+    <div class="single-slide" style="background-image: url(/assets/images/slider/slide-bg-1.jpg)">
+    </div>
+    <!-- Single Slide End -->
+
+</div>
+<!-- Hero Section End -->
+<div class="banner-area section-pt">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="single-banner mb-30">
+                    <a href="#"><img src="~/assets/images/banner/banner-01.jpg" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6  col-md-6">
+                <div class="single-banner mb-30">
+                    <a href="#"><img src="~/assets/images/banner/banner-02.jpg" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="product-area section-pb section-pt-30">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <ul class="nav product-tab-menu" role="tablist">
+                    <li class="product-tab-item nav-item active">
+                        <a class="product-tab__link active" id="nav-featured-tab" data-bs-toggle="tab" href="#nav-featured" role="tab" aria-selected="true">NEW LAUNCH WATCH</a>
+                    </li>
+                    <li class="product-tab__item nav-item">
+                        <a class="product-tab__link" id="nav-new-tab" data-bs-toggle="tab" href="#nav-new" role="tab" aria-selected="false">Trending watches</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="tab-content product-tab__content" id="product-tabContent">
+            <div class="tab-pane fade show active" id="nav-featured" role="tabpanel">
+                <div class="product-carousel-group">
+
+                    <div class="row product-active-row-4">
+                        @foreach (var item in @ViewBag.NewWatch as List<WatchVM>)
+                        {
+                            <div class="col-lg-12">
+                                <!-- single-product-area start -->
+                            <div class="single-product-area mt-30 boxwatch">
+                                    <div class="product-thumb">
+                                        <a href="/WatchUser/Detail/@item.WatchId">
+                                            <img class="primary-image imgwatch" src="~/imgs/@item.Image" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="product-caption">
+                                        <h4 class="product-name"><a href="/WatchUser/Detail/@item.WatchId">@item.WatchName</a></h4>
+                                        <div class="price-box">
+                                            <span class="new-price">@item.Price.ToString("0,000")đ</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- single-product-area end -->
+                        </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="nav-new" role="tabpanel">
+                <div class="product-carousel-group">
+
+                    <div class="row product-active-row-4">
+                        @foreach (var item in @ViewBag.TrendWatch as List<WatchVM>)
+                        {
+                            <div class="col-lg-12">
+                            <!-- single-product-area start -->
+                            <div class="single-product-area mt-30 boxwatch">
+                                <div class="product-thumb">
+                                    <a href="/WatchUser/Detail/@item.WatchId">
+                                        <img class="primary-image imgwatch" src="~/imgs/@item.Image" alt="">
+                                    </a>
+                                </div>
+                            <div class="product-caption">
+                                <h4 class="product-name"><a href="/WatchUser/Detail/@item.WatchId">@item.WatchName</a></h4>
+                                    <div class="price-box">
+                                        <span class="new-price">@item.Price</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- single-product-area end -->
+                        </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="product-area section-pb section-pt-30">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <ul class="nav product-tab-menu" role="tablist">
+                    <li class="product-tab-item nav-item active">
+                        <a class="product-tab__link active" id="nav-featured-tab" data-bs-toggle="tab" href="#nav-store1" role="tab" aria-selected="true">New store opening</a>
+                    </li>
+                    <li class="product-tab__item nav-item">
+                        <a class="product-tab__link" id="nav-new-tab" data-bs-toggle="tab" href="#nav-store2" role="tab" aria-selected="false">Favorite Store</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="tab-content product-tab__content" id="product-tabContent">
+            <div class="tab-pane fade show active" id="nav-store1" role="tabpanel">
+                <div class="product-carousel-group">
+
+                    <div class="row">
+                        @foreach (var item in @ViewBag.NewShop as List<StoreVM>)
+                        {
+                            string link = $"/Shop/Details/{item.StoreId}";
+                            <div class="col-lg-4">
+                                <!-- single-product-area start -->
+                            <div class="single-product-area mt-30 ">
+                                    <div class="product-thumb">
+                                        <a href="/Shop/Details/@item.StoreId">
+                                            <img class="primary-image " height="200" src="~/imgs/@item.Image" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="product-caption">
+                                        <div class="price-box">
+                                            <div>
+                                                <a href="#"> <h3>@item.StoreName</h3> </a>
+                                            </div>
+                                            <div>
+                                                <i class="far fa-map"></i>
+                                                <span>@item.Address</span>
+                                            </div>
+                                            <div>
+                                                <a href="#" class="phone">
+                                                    <i class="fas fa-tty"></i> 
+                                                    <span>
+                                                        Điện thoại: @item.Phone
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <a href="@link" >
+                                                    <i class="fas fa-map-signs"></i> <span>Giới thiệu cửa hàng đồng hồ</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- single-product-area end -->
+                        </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="nav-store2" role="tabpanel">
+                <div class="product-carousel-group">
+
+                    <div class="row">
+                        @foreach (var item in @ViewBag.LikeShop as List<StoreVM>)
+                        {
+                            string link = $"/Shop/Details/{item.StoreId}";
+                            <div class="col-lg-4">
+                                <!-- single-product-area start -->
+                                <div class="single-product-area mt-30 ">
+                                    <div class="product-thumb">
+                                        <a href="/Shop/Details/@item.StoreId">
+                                            <img class="primary-image " height="200" src="~/imgs/@item.Image" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="product-caption">
+                                        <div class="price-box">
+                                            <div>
+                                                <a href="#"> <h3>@item.StoreName</h3> </a>
+                                            </div>
+                                            <div>
+                                                <i class="far fa-map"></i>
+                                                <span>@item.Address</span>
+                                            </div>
+                                            <div>
+                                                <a href="#" class="phone">
+                                                    <i class="fas fa-tty"></i> <span>
+                                                        Điện thoại: @item.Phone
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <a href="@link">
+                                                    <i class="fas fa-map-signs"></i> <span>Giới thiệu cửa hàng đồng hồ</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- single-product-area end -->
+                        </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="letast-blog-area section-pb">
+    <div class="container">
+        <h3>Post Recent</h3>
+        <div class="row">
+            @foreach (var item in @ViewBag.RecentPost as List<Post>)
+            {
+                <div class="col-lg-4">
+                    <div class="singel-latest-blog">
+                        <div class="articles-image">
+                            <a href="/Posts/Details/@item.PostId">
+                                <img src="~/imgs/@item.Image1" alt="" height="350">
+                            </a>
+                        </div>
+                        <div class="aritcles-content" style="height:100px">
+                            <div class="author-name">
+                                post by: <a href="#"> </a>  @item.CreateOn.ToString("dd/MM/yyyy")
+                            </div>
+                            <h4><a href="/Posts/Details/@item.PostId" class="articles-name">@item.Title </a></h4>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Messenger Plugin chat Code -->
+<div id="fb-root"></div>
+
+<!-- Your Plugin chat code -->
+<div id="fb-customer-chat" class="fb-customerchat">
+</div>
+
+@section Scripts{
+
+<script>
+    var chatbox = document.getElementById('fb-customer-chat');
+    chatbox.setAttribute("page_id", "101421329202624");
+    chatbox.setAttribute("attribution", "biz_inbox");
+    window.fbAsyncInit = function() {
+       FB.init({
+         xfbml            : true,
+         version          : 'v13.0'
+       });
+     };
+
+     (function(d, s, id) {
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) return;
+       js = d.createElement(s); js.id = id;
+       js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+</script>
+}

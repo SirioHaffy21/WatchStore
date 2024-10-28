@@ -1,0 +1,376 @@
+﻿@model IEnumerable<WatchManageStore.Models.Store>
+@{
+    Layout = "_Layout";
+    var delete = TempData["Delete"];
+    var update = TempData["Update"];
+    var create = TempData["Create"];
+}
+
+<input hidden id="delete" value="@delete" />
+<input hidden id="update" value="@update" />
+<input hidden id="create" value="@create" />
+
+<p>
+    <a class="btn btn-success mt-2" id="Create" href="#">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="dsStore">
+    </tbody>
+</table>
+
+<div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog" style=" max-width:70% !important">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <h3 class="modal-title">Update Store</h3>
+                    <button type="button" class="btn-close cancel" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="UploadForm" action="/Admin/Store/Create" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="text" hidden id="idLop" value="" />
+                        <!-- form nhập thông tin-->
+
+                        <div class="row">
+                            <div class="form-group col-md-4 d-none">
+                                <label for="inputEmail4">Id</label>
+                                <input type="text" class="form-control" id="storeId" name="storeId">
+                            </div>
+                            <div class=" col-md-6">
+                                <label for="inputEmail4">Store Name</label>
+                                <input type="text" class="form-control" name="storeName" id="storeName">
+                                @*<span asp-validation-for="StoreName" class="text-danger"> </span>*@
+                            </div>
+                            <div class=" col-md-6">
+                                <label for="inputEmail4">Phone Number</label>
+                                <input type="number" name="phone" class="form-control" id="phone">
+                            </div>
+                        </div>
+                        <div class="form-row mt-3 " style="height:100px">
+                            <label for="inputEmail4">Image</label>
+                            <input class="col-md-6" id="image" name="image" type="file" accept="image/*" onchange="loadFile(event)">
+                            <img id="output" height="100" width="190" />
+                            <img type="image" id='imageShow' height="100" width="190" />
+                            <input type="text" hidden id='imageData' name="imageData" />
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputPassword4">Address</label>
+                            <input type="text" class="form-control" name="address" id="address">
+                        </div>
+                        <div class="form-group col-12 mt-3 row ">
+                            <div class="col-3">
+                                <label>Status</label>
+                                <input type="checkbox" id="status" name="status" value="true">
+                            </div>
+                            <div id="rateStar" class="col-9 d-none">
+                                <label for="scales">Rate:<span id="rateAV"></span></label>
+                                <div id="cate-rating" class="cate-rating">
+                                    <div class="stars">
+                                        <a id="star-1" class="star "><span class="fa fa-star"></span></a>
+                                        <a id="star-2" class="star "><span class="fa fa-star"></span></a>
+                                        <a id="star-3" class="star"><span class="fa fa-star"></span></a>
+                                        <a id="star-4" class="star"><span class="fa fa-star"></span></a>
+                                        <a id="star-5" class="star"><span class="fa fa-star"></span></a>
+                                    </div>
+                                    @* <div class="clearfix"></div>*@
+                                </div>
+                            </div>
+                            <div class="form-row ">
+                                <label for="scales">Description</label>
+                                <textarea id="description" name="description">
+                            </textarea>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary cancel" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" value="submit" id="save" class="btn btn-primary">Save changes</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog" style=" max-width:70% !important">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h3 class="modal-title">Detail Store</h3>
+                <button type="button" class="btn-close cancel" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="content">
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary cancel" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<form id="deleteForm" action="/Admin/Store/Delete">
+    <input type="hidden" id="storeDeleteId" name="Id" />
+</form>
+@section scripts {
+<script>
+     let myEditor ;
+     var loadFile = function (event) {
+         $('#imageShow').addClass("d-none")
+         $('#output').removeClass("d-none")
+         //hiển thị hình ảnh
+         var reader = new FileReader();
+         reader.onload = function () {
+             var output = document.getElementById('output');
+             output.src = reader.result;
+             files = reader.result;
+         };
+         reader.readAsDataURL(event.target.files[0]);
+     };
+     ClassicEditor
+         .create(document.querySelector('#description'))
+         .then(editor => {
+            window.editor = editor;
+            myEditor = editor;
+        })
+         .catch(error => {
+             console.error(error);
+         });
+       //CKEDITOR.replace( 'description' );
+      //$('#description').ckeditor();
+
+     $(function () {
+         //load ds Store
+         loadStores();
+         //$('.table').DataTable();
+
+     })
+    // $(document).ready(function(){
+     //code to show your modal in here
+     //btn Create
+     $('#Create').click(function () {
+         $('#myModal').modal('show');
+         $('#imageShow').addClass("d-none")
+         $('#output').removeClass("d-none")
+     });
+     //})
+     //btn Edit
+
+     $(document).on('click', '.btnEdit', function () {
+            $('#output').addClass("d-none")
+         let idStore = $(this).data('id')
+
+         $.ajax({
+             url: '/Admin/Store/GetDetail',
+             type: 'get',
+             data: {
+                 id: idStore
+             },
+             success: function (data) {
+                 //gán giá trị vào modal
+                 document.getElementById('storeId').value = data.detail.storeId;
+                 document.getElementById('storeName').value = data.detail.storeName;
+                 document.getElementById('address').value = data.detail.address;
+                 document.getElementById('phone').value = data.detail.phone;
+                 if(data.detail.description){
+                  myEditor.setData(data.detail.description);
+
+                 }
+                   $('#status').prop('checked', data.detail.status);
+                 document.getElementById('imageShow').setAttribute("src", '/imgs/'+data.detail.image);
+                 document.getElementById('imageData').value=data.detail.image;
+                 $('#myModal').modal('show');
+             }
+         });
+     });
+      //btn Detail
+
+     $(document).on('click', '.btnDetail', function () {
+          $('#output').addClass("d-none")
+         $('#rateStar').removeClass("d-none")
+         $('#save').addClass("d-none")
+         let idStore = $(this).data('id')
+
+         $.ajax({
+             url: '/Admin/Store/GetDetail',
+             type: 'get',
+             data: {
+                 id: idStore
+             },
+             success: function (data) {
+                 //gán giá trị vào modal
+               var rate="";
+                 if(data.detail.rate!=0){
+                       for (let i = 1; i <= data.detail.rate; i++)
+                   {
+                   rate +='<span class="fa fa-star checked"></span>';
+                   }
+                 }
+
+                  for (let i = 1; i <= 5 -data.detail.rate; i++)
+                  {
+                     rate +='<span class="fa fa-star"></span>'
+                  }
+                 var tr =`
+                 <div class="row product-details-inner">
+                    <div class="col-lg-5 col-md-6">
+                    <!-- Product Details Left -->
+                    <div class="product-large-slider p-3" style="border: 0px solid #d1caca;">
+                        <div>
+                            <img src="/imgs/${data.detail.image}" width="300" height="300" alt="product-details" class=" m-auto" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 col-md-6">
+                    <div class="product-details-view-content">
+                        <div class="product-info">
+                            <h3>${data.detail.storeName}</h3>
+                             <div >
+                               <ul>
+                               Rate: ${rate}
+                                  </ul>
+                                </div>
+                            `
+                    if(data.detail.description!=null){
+                     tr+= `<p>${data.detail.description} </p>
+                      <ul class="stock-cont">
+                                <li class="product-sku">Address: <span>${data.detail.address}</span></li>
+                       </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                 `
+            }
+            else{
+                  tr+=`</div>
+                    </div>
+                </div>
+            </div>
+                 `
+            }
+                  $('#content').append(tr);
+                $('#myModal2').modal('show');
+             }
+         });
+     });
+
+     //btn SaveChange trong Modal
+    $('#UploadForm').submit(function () {
+
+     });
+
+     //btn Cancel , X
+    $('.cancel').click(function () {
+         //xóa dữ liệu trong modal
+         Remove();
+    });
+
+     //load ds Store
+     function loadStores() {
+         $.ajax({
+             url: '/Admin/Store/GetAll',
+             type: 'get',
+             success: function (data) {
+                 if (data.code = 200) {
+                     $('#dsStore').empty();
+                     $.each(data.ds, function (k, v) {
+                         var active = v.status? '<p class="bg-primary rounded text-center text-light w-75">Open</p>' : '<p class="bg-danger rounded text-center text-light w-75">Close</p>';
+                         var tr = '<tr>';
+                         tr += '<td>' + v.storeName + '</td>';
+                         tr += '<td>' + active + '</td>';
+                         tr += '<td>' + v.address + '</td>';
+                         //tr += '<td>' + v.description + '</td>';
+                         tr += '<td>' + v.phone + '</td>';
+                         tr += '<td><img src="/imgs/' + v.image + '" alt="Sample Photo" width="50" heigh ="50"/> </td>';
+                         tr += '<td><button  class=" btnEdit btn btn-warning btnEdit" data-id="' + v.storeId + '">Edit</button> <button  class=" btnDetail btn btn-primary btnDetail" data-id="' + v.storeId + '">Detail</button>  <button id="delete"  class=" btnDelete btn btn-danger btnDelete" data-id="' + v.storeId + '">Delete</button>';
+                         tr += '</td>';
+                         tr += '</tr>';
+                         $('#dsStore').append(tr);
+
+                     })
+                 }
+                 $('.table').DataTable();
+                 //thong bao cho nguoi dung create, delte, update
+                var del= $('#delete').val();
+                var create= $('#create').val();
+                var update= $('#update').val();
+                if(del){
+                     toastr.error(del,'Success Alert',{timeOut:800})
+                }
+                if(create){
+                     toastr.success(create,{timeOut:800})
+                }
+                if(update){
+                     toastr.success(update,{timeOut:800})
+                }
+             }
+         })
+     }
+
+     //xóa dữ liệu trong modal
+     function Remove() {
+         $('#storeId').val('');
+         $('#storeName').val('');
+         $('#address').val('');
+         $('#phone').val('');
+         $('#imageShow').removeClass("d-none")
+         $('#output').addClass("d-none")
+          myEditor.setData('');
+          document.getElementById('image').value = null;
+          document.getElementById("output").removeAttribute('src');
+          //hiển thị hình ảnh
+          //hiển thị nút save
+           $('#save').removeClass("d-none")
+
+           $('#rateStar').addClass("d-none")
+
+            $('#content').empty();
+     }
+       //btn delete
+     $(document).on('click', '.btnDelete', function () {
+          swal({
+                    title: "Are you sure?",
+                    text: "Are you sure you want to delete this record?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+          }).then((confirm) => {
+                    if (confirm) {
+                        var btn = $(this);
+                        var id = btn.data("id");
+                        $('#storeDeleteId').val(id);
+                        $('#deleteForm').submit();
+                    }
+          });
+     });
+
+</script>
+}
+

@@ -1,0 +1,12 @@
+D:\FileOfSH\doan\App\WatchStore\WatchManageStore\EmailService\bin\Release\net5.0\EmailService.deps.json
+D:\FileOfSH\doan\App\WatchStore\WatchManageStore\EmailService\bin\Release\net5.0\EmailService.dll
+D:\FileOfSH\doan\App\WatchStore\WatchManageStore\EmailService\bin\Release\net5.0\ref\EmailService.dll
+D:\FileOfSH\doan\App\WatchStore\WatchManageStore\EmailService\bin\Release\net5.0\EmailService.pdb
+D:\FileOfSH\doan\App\WatchStore\WatchManageStore\EmailService\obj\Release\net5.0\EmailService.csproj.AssemblyReference.cache
+D:\FileOfSH\doan\App\WatchStore\WatchManageStore\EmailService\obj\Release\net5.0\EmailService.GeneratedMSBuildEditorConfig.editorconfig
+D:\FileOfSH\doan\App\WatchStore\WatchManageStore\EmailService\obj\Release\net5.0\EmailService.AssemblyInfoInputs.cache
+D:\FileOfSH\doan\App\WatchStore\WatchManageStore\EmailService\obj\Release\net5.0\EmailService.AssemblyInfo.cs
+D:\FileOfSH\doan\App\WatchStore\WatchManageStore\EmailService\obj\Release\net5.0\EmailService.csproj.CoreCompileInputs.cache
+D:\FileOfSH\doan\App\WatchStore\WatchManageStore\EmailService\obj\Release\net5.0\EmailService.dll
+D:\FileOfSH\doan\App\WatchStore\WatchManageStore\EmailService\obj\Release\net5.0\ref\EmailService.dll
+D:\FileOfSH\doan\App\WatchStore\WatchManageStore\EmailService\obj\Release\net5.0\EmailService.pdb

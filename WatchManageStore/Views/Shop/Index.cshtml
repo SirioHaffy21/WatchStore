@@ -1,0 +1,145 @@
+﻿@model IEnumerable<WatchManageStore.Areas.Admin.Models.StoreVM>
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+<div class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- breadcrumb-list start -->
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item">@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li class="breadcrumb-item active">Shop</li>
+                </ul>
+                <!-- breadcrumb-list end -->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="product-area section-pb section-pt-30">
+    <div class="container">
+        <div class="tab-pane fade show active">
+            <div class="product-carousel-group">
+
+                <div class="row" id="listStore">
+                    @foreach (var item in Model)
+                    {
+                        string link = $"/Shop/Details/{item.StoreId}";
+                        var id = @item.StoreId;
+                        <div class="col-lg-4">
+                            <!-- single-product-area start -->
+                            <div class="single-product-area mt-30">
+                                <div class="product-thumb">
+                                    <a href="/Shop/Details/@item.StoreId">
+                                        <img class="primary-image" src=imgs/@item.Image width="360" height="318" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-caption">
+                                    <div class="price-box">
+                                        <div>
+                                            <a> <h3>@item.StoreName</h3> </a>
+                                        </div>
+                                        <div>
+                                            <i class="far fa-map"></i>
+                                            <span>@item.Address</span>
+                                        </div>
+                                        <div>
+                                            <a href="#" class="phone">
+                                                <i class="fas fa-tty"></i> <span>
+                                               Điện thoại: @item.Phone
+                                             </span>
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a href="@link" title="cua-hang-truc-tuyen-online-voi-uu-dai">
+                                                <i class="fas fa-map-signs"></i> <span>Giới thiệu cửa hàng đồng hồ</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- single-product-area end -->
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).on('click', '#search', function () {
+            $("#search-form").submit((e) => {
+                e.preventDefault();
+            });
+            var value = $("#myInput").val().trim().toLowerCase();
+            $.ajax({
+                url: '/Shop/SearchStore',
+                type: 'get',
+                data: { search: value },
+                success: function (data) {
+                    $('#listStore').empty();
+                    $.each(data.searchItem, function (k, v) {
+                        let str = `<div class="col-lg-4">
+                                <div class="single-product-area mt-30">
+                                    <div class="product-thumb">
+                                        <a>
+                                            <img class="primary-image" src="imgs/${v.image}" width="360" height="318" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="product-caption">
+                                            <div class="price-box">
+                                                <div>
+                                                    <a> <h3>${v.storeName}</h3> </a>
+                                                </div>
+                                                <div>
+                                                    <i class="far fa-map"></i>
+                                                    <span>${v.address}</span>
+                                                </div>
+                                                <div>
+                                                    <a href="#" class="phone">
+                                                        <i class="fas fa-tty"></i> <span>
+                                                            ${v.phone}
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div>
+                                                    <a href="/Shop/Details/${v.storeId}" title="cua-hang-truc-tuyen-online-voi-uu-dai">
+                                                        <i class="fas fa-map-signs"></i> <span>Giới thiệu cửa hàng đồng hồ</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                             </div>`;
+                        document.querySelector('#listStore').insertAdjacentHTML('beforeend', str);
+                    })
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                }
+            });
+        })
+
+    </script>
+}
+@section search{
+    <div class="search-box-wrapper">
+        <div class="search-box-inner-wrap">
+            <form class="search-box-inner" id="search-form">
+                <div class="search-field-wrap">
+                    <input type="text" class="search-field" placeholder="Tìm kiếm..." id="myInput">
+
+                    <div class="search-btn">
+                        <button id="search"><i class="icon-magnifier"></i></button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+}

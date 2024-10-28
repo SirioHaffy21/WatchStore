@@ -1,0 +1,101 @@
+﻿@{
+    Layout = "_Layout";
+}
+<div class=row>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header text-center">
+            Number post per month
+            </div>
+            <div class="card-body">
+                 <canvas class="my-4 h-25" id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+     <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header text-center">
+            Number star rate
+            </div>
+            <div class="card-body">
+                 <canvas class="my-4 h-25" style="width:300px !important;height:300px !important" id="myChartPie"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+<script>
+     $(function () {
+         //load ds Store
+         Load();
+         //$('.table').DataTable();
+
+     })
+    function Load(){
+        $.ajax({
+            url:'/Admin/Dashboard/GetDashBoard',
+            type:'get',
+            success:function(data){
+                const ctx1 = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov','Dec'],
+                        datasets: [{
+                            label: 'Number Post per month',
+                            data: [data.ds[0],data.ds[1],data.ds[2],data.ds[3],data.ds[4],data.ds[5],data.ds[6],data.ds[7],data.ds[8],data.ds[9],data.ds[10],data.ds[11]],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    }
+                });
+                ///
+                const ctx2 = document.getElementById('myChartPie').getContext('2d');
+                const myChartPie = new Chart(ctx2, {
+                    type: 'pie',
+                    data: {
+                        labels: ['One Star', 'Two Star', 'Three Star', 'Four Star', 'Five Star'],
+                        datasets: [{
+                            label: '# of Votes',
+                            data: [data.dsNumber[0],data.dsNumber[1],data.dsNumber[2],data.dsNumber[3],data.dsNumber[4]],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    }
+                });
+            }
+        })
+    }
+
+</script>
+}

@@ -1,0 +1,142 @@
+﻿@model AccountInfoVM
+
+<!-- breadcrumb-area start -->
+<div class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- breadcrumb-list start -->
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active">My Account Page</li>
+                </ul>
+                <!-- breadcrumb-list end -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area end -->
+<!-- main-content-wrap start -->
+<div class="main-content-wrap section-ptb my-account-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="account-dashboard">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-2">
+                            <!-- Nav tabs -->
+                            <ul role="tablist" class="nav flex-column dashboard-list">
+                                <li><a href="#account-details" data-bs-toggle="tab" class="nav-link active">Account details</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12 col-lg-10">
+                            <!-- Tab panes -->
+                            <div class="tab-content dashboard-content">
+                                <div class="tab-pane" id="dashboard">
+                                    <h3>Dashboard </h3>
+                                    <p>From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
+                                </div>
+                                <div class="tab-pane fade" id="orders">
+                                    <h3>Orders</h3>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order</th>
+                                                    <th>Date</th>
+                                                    <th>Status</th>
+                                                    <th>Total</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>May 10, 2018</td>
+                                                    <td>Processing</td>
+                                                    <td>$25.00 for 1 item </td>
+                                                    <td><a href="cart.html" class="view">view</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>May 10, 2018</td>
+                                                    <td>Processing</td>
+                                                    <td>$17.00 for 1 item </td>
+                                                    <td><a href="cart.html" class="view">view</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="downloads">
+                                    <h3>Downloads</h3>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Downloads</th>
+                                                    <th>Expires</th>
+                                                    <th>Download</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Haven - Free Real Estate PSD Template</td>
+                                                    <td>May 10, 2018</td>
+                                                    <td>never</td>
+                                                    <td><a href="#" class="view">Click Here To Download Your File</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Nevara - ecommerce html template</td>
+                                                    <td>Sep 11, 2018</td>
+                                                    <td>never</td>
+                                                    <td><a href="#" class="view">Click Here To Download Your File</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="address">
+                                    <p>The following addresses will be used on the checkout page by default.</p>
+                                    <h4 class="billing-address">Billing address</h4>
+                                    <a href="#" class="view">edit</a>
+                                    <p class="biller-name">Johan Don</p>
+                                    <p>Bangladesh</p>
+                                </div>
+                                <div class="tab-pane fade active show" id="account-details">
+                                    <h3>Account details </h3>
+                                    <div class="login">
+                                        <div class="login-form-container">
+                                            <div class="account-login-form">
+
+                                                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                                                <form asp-action="InfoUpdate">
+                                                    <div class="account-input-box">
+                                                        <label>First Name</label>
+                                                        <input type="text" name="FirstName" value="@Model.FirstName">
+                                                        <label>Last Name</label>
+                                                        <input type="text" name="LastName" value="@Model.LastName">
+                                                        <label>Email</label>
+                                                        <input type="text" name="Email" value="@Model.Email">
+                                                        <label>Password</label>
+                                                        <input type="password" name="Password">
+                                                    </div>
+                                                    <div class="button-box">
+                                                        <button class="btn default-btn" type="submit">Save</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- main-content-wrap end -->

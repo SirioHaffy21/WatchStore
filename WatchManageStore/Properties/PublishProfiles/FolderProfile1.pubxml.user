@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\nha34\OneDrive\Máy tính\Host</_PublishTargetUrl>
+    <History>True|2022-04-08T10:18:56.3032732Z;True|2022-04-08T17:14:06.0865542+07:00;True|2022-04-08T17:12:28.2697197+07:00;True|2022-04-08T17:02:25.0264088+07:00;True|2022-04-08T16:01:04.0652764+07:00;</History>
+  </PropertyGroup>
+</Project>

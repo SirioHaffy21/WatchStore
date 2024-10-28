@@ -1,0 +1,437 @@
+﻿@model IEnumerable<WatchManageStore.Models.Watch>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Index";
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    var categories = ViewBag.Categorites;
+    var stores = ViewBag.Stores;
+    var brands = ViewBag.Bands;
+     var delete = TempData["Delete"];
+    var update = TempData["Update"];
+    var create = TempData["Create"];
+}
+
+<input hidden id="delete" value="@delete" />
+<input hidden id="update" value="@update" />
+<input hidden id="create" value="@create" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<p>
+    <a class="btn btn-success mt-3" id="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.WatchName)
+            </th>
+            <th>
+                Stocking
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="col-4">
+                    @Html.DisplayFor(modelItem => item.WatchName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <img src="/imgs/@item.Image" width="50" height="50" />
+                </td>
+                <td>
+                    @String.Format(info,"{0:c0}",@item.Price)
+                </td>
+
+                <td>
+                    <a class="btn btn-warning btnEdit" data-id="@item.WatchId">Edit</a> |
+                    <a class="btn btn-primary btnDetail" data-id="@item.WatchId">Details</a> |
+                    <a class="btn btn-danger btnDelete" data-id="@item.WatchId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog" style=" max-width:90% !important">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <h3 class="modal-title">Create Watch</h3>
+                    <button type="button" class="btn-close cancel" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="UploadForm" action="/Admin/Watch/Create" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="text" hidden id="idLop" value="" />
+                        <!-- form nhập thông tin-->
+
+                        <div class="row">
+                            <div class="form-group col-md-4 d-none">
+                                <label>Id</label>
+                                <input type="text" class="form-control" id="watchId" name="watchId">
+                                <input type="text" class="form-control" id="detailWatch" name="id">
+                            </div>
+                            <div class=" col-md-3">
+                                <label for="inputEmail4">Watch Name</label>
+                                <input type="text" class="form-control" name="watchName" id="watchName">
+                            </div>
+                            <div class=" col-md-2">
+                                <label for="inputEmail4">Price</label>
+                                <input type="number" name="price" class="form-control" id="price">
+                            </div>
+                            <div class=" col-md-2">
+                                <label for="inputEmail4">Diameter</label>
+                                <input type="number" name="diameter" class="form-control" id="diameter">
+                            </div>
+                            <div class=" col-md-3">
+                                <label for="inputEmail4">Facematerial</label>
+                                <input type="text" name="facematerial" class="form-control" id="facematerial">
+                            </div>
+
+                        </div>
+
+                        <div class="form-row mt-3 " style="height:100px">
+                            <label for="inputEmail4">Image</label>
+                            <input class="col-md-3" id="file" name="file" type="file" accept="image/*" onchange="loadFile(event)">
+                            <img id="output" height="100" width="190" />
+                            <img id='imageShow' height="100" width="190" />
+                            <input type="text" hidden id='image' name="image" />
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label>Brand</label>
+                                <select class="form-control" name="brandId" id="brandId">
+                                    @foreach (var item in brands)
+                                    {
+                                        <option value="@item.BrandId">
+                                            @item.BrandName
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Store</label>
+                                <select class="form-control" name="storeId" id="storeId">
+                                    @foreach (var item in stores)
+                                    {
+                                        <option value="@item.StoreId">
+                                            @item.StoreName
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Category</label>
+                                <select class="form-control" name="categoryId" id="categoryId">
+                                    @foreach (var item in categories)
+                                    {
+                                        <option value="@item.CategoryId">
+                                            @item.CategoryName
+                                        </option>
+                                    }
+                                </select>
+
+                            </div>
+                            <div class=" col-md-2">
+                                <label for="inputEmail4">WireMaterial</label>
+                                <input type="text" name="wireMaterial" class="form-control" id="wireMaterial">
+                            </div>
+                            <div class=" col-md-2">
+                                <label for="inputEmail4">Warranty</label>
+                                <input type="number" name="warranty" class="form-control" id="warranty">
+                            </div>
+                        </div>
+                        <div class="form-group  mt-3 row ">
+                            <div class="col-3">
+                                <label for="scales">Status</label>
+                                <input type="checkbox" id="status" name="status" value="true">
+                            </div>
+                            <div class="col-3">
+                                <label for="scales">Waterproof</label>
+                                <input type="checkbox" id="waterproof" name="waterproof" value="true">
+                            </div>
+                            <div id="rateStar" class="col-9 d-none">
+                                <label for="scales">Rate:<span id="rateAV"></span></label>
+                                <div id="cate-rating" class="cate-rating">
+                                    <div class="stars">
+                                        <a id="star-1" class="star "><span class="fa fa-star"></span></a>
+                                        <a id="star-2" class="star "><span class="fa fa-star"></span></a>
+                                        <a id="star-3" class="star"><span class="fa fa-star"></span></a>
+                                        <a id="star-4" class="star"><span class="fa fa-star"></span></a>
+                                        <a id="star-5" class="star"><span class="fa fa-star"></span></a>
+                                    </div>
+                                    @* <div class="clearfix"></div>*@
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-row ">
+                            <label for="scales">Description</label>
+                            <textarea id="description" name="description">
+                            </textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary cancel" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" value="submit" id="save" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog" style=" max-width:80% !important">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h3 class="modal-title">Detail Watch</h3>
+                <button type="button" class="btn-close cancel" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="content">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary cancel" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<form id="deleteForm" action="/Admin/Watch/Delete">
+    <input type="hidden" id="watchDeleteId" name="Id" />
+</form>
+@section scripts{
+<script>
+    $('.table').DataTable();
+       //thong bao cho nguoi dung create, delte, update
+                var del= $('#delete').val();
+                var create= $('#create').val();
+                var update= $('#update').val();
+                if(del){
+                     toastr.error(del,'Success Alert',{timeOut:800})
+                }
+                if(create){
+                     toastr.success(create,{timeOut:800})
+                }
+                if(update){
+                     toastr.success(update,{timeOut:800})
+                }
+    //image
+     var loadFile = function (event) {
+         $('#imageShow').addClass("d-none")
+         $('#output').removeClass("d-none")
+         //hiển thị hình ảnh
+         var reader = new FileReader();
+         reader.onload = function () {
+             var output = document.getElementById('output');
+             output.src = reader.result;
+             files = reader.result;
+         };
+         reader.readAsDataURL(event.target.files[0]);
+     };
+    //ckeditor
+       ClassicEditor
+         .create(document.querySelector('#description'))
+         .then(editor => {
+            window.editor = editor;
+            myEditor = editor;
+        })
+         .catch(error => {
+             console.error(error);
+         });
+      //btn Create
+     $('#Create').click(function () {
+         $('#myModal').modal('show');
+         $('#imageShow').addClass("d-none")
+         $('#output').removeClass("d-none")
+     });
+      //btn detail
+     $('.btnDetail').click(function () {
+           var idStore = $(this).data('id')
+         $.ajax({
+             url: '/Admin/Watch/GetDetail',
+             type: 'get',
+             data: {
+                 id: idStore
+             },
+             success: function (data) {
+                 var money = data.watch.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                 var rate="";
+                 if(data.rate!=0){
+                       for (let i = 1; i <= data.rate; i++)
+                   {
+                   rate +='<span class="fa fa-star checked"></span>';
+                   }
+                 }
+
+                  for (let i = 1; i <= 5 -data.rate; i++)
+                  {
+                     rate +='<span class="fa fa-star"></span>'
+                  }
+                 var tr =`
+                 <div class="row product-details-inner">
+                    <div class="col-lg-5 col-md-6">
+                    <!-- Product Details Left -->
+                    <div class="product-large-slider p-3" style="border: 0px solid #d1caca;">
+                        <div>
+                            <img src="/imgs/${data.watch.image}" width="300" height="300" alt="product-details" class=" m-auto" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 col-md-6">
+                    <div class="product-details-view-content">
+                        <div class="product-info">
+                            <h3>${data.watch.watchName}</h3>
+                             <div >
+                               <ul>
+                               Rate: ${rate}
+                                  </ul>
+                                </div>
+                            <div class="price-box">
+                                <span class="new-price">${money} Đ </span>
+                            </div>
+                            <p>${data.watch.description} </p>`
+            if(data.watch.detailWatch!=null){
+                tr+= `<ul class="stock-cont">
+                                <li class="product-sku">Diameter: <span>${data.watch.detailWatch.diameter}</span></li>
+                                <li class="product-stock-status">Waterproof:${data.watch.detailWatch.waterproof}</li>
+                                <li class="product-stock-status">Facematerial${data.watch.detailWatch.facematerial}</li>
+                                <li class="product-stock-status">WireMaterial: ${data.watch.detailWatch.wireMaterial}</li>
+                                <li class="product-stock-status">Warranty: ${data.watch.detailWatch.warranty}</li>
+                       </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                 `
+            }
+            else{
+                  tr+=`</div>
+                    </div>
+                </div>
+            </div>
+                 `
+            }
+                  $('#content').append(tr);
+                $('#myModal2').modal('show');
+             }
+         });
+
+     });
+      //btn Edit
+
+     $(document).on('click', '.btnEdit', function () {
+            $('#output').addClass("d-none")
+         let idStore = $(this).data('id')
+
+         $.ajax({
+             url: '/Admin/Watch/GetDetail',
+             type: 'get',
+             data: {
+                 id: idStore
+             },
+             success: function (data) {
+                 //gán giá trị vào modal
+                 document.getElementById('watchId').value = data.watch.watchId;
+                 document.getElementById('watchName').value = data.watch.watchName;
+                 document.getElementById('price').value = data.watch.price;
+                 document.getElementById('brandId').value = data.watch.brandId;
+                 document.getElementById('storeId').value = data.watch.storeId;
+                 $('#status').prop('checked', data.watch.status);
+                 document.getElementById('categoryId').value = data.watch.categoryId;
+                // document.getElementById('insurance').value = data.watch.insurance;
+                if(data.watch.detailWatch != null){
+                 document.getElementById('detailWatch').value = data.watch.detailWatch.id;
+                 document.getElementById('facematerial').value = data.watch.detailWatch.facematerial;
+                 document.getElementById('wireMaterial').value = data.watch.detailWatch.wireMaterial;
+                 document.getElementById('diameter').value = data.watch.detailWatch.diameter;
+                 document.getElementById('warranty').value = data.watch.detailWatch.warranty;
+                 $('#waterproof').prop('checked',data.watch.detailWatch.waterproof);
+                }
+
+                 if(data.watch.description){
+                  myEditor.setData(data.watch.description);
+
+                 }
+                 document.getElementById('imageShow').setAttribute("src", '/imgs/'+data.watch.image);
+                 document.getElementById('image').value=data.watch.image;
+                 $('#myModal').modal('show');
+             }
+         });
+     });
+       //btn delete
+     $(document).on('click', '.btnDelete', function () {
+          swal({
+                    title: "Are you sure?",
+                    text: "Are you sure you want to delete this record?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+          }).then((confirm) => {
+                    if (confirm) {
+                        var btn = $(this);
+                        var id = btn.data("id");
+                        $('#watchDeleteId').val(id);
+                        $('#deleteForm').submit();
+                    }
+          });
+     });
+       //btn Cancel , X
+    $('.cancel').click(function () {
+         //xóa dữ liệu trong modal
+         Remove();
+    });
+
+
+     //xóa dữ liệu trong modal
+     function Remove() {
+         $('#watchId').val('');
+         $('#detailWatch').val('');
+         $('#watchName').val('');
+         $('#price').val('');
+         $('#brandId').val('');
+         $('#brandId').val('');
+         $('#storeId').val('');
+         $('#categoryId').val('');
+         $('#diameter').val('');
+         $('#facematerial').val('');
+         $('#wireMaterial').val('');
+         $('#warranty').val('');
+         $('#waterproof').val('');
+
+         $('#imageShow').removeClass("d-none")
+         $('#output').addClass("d-none")
+          myEditor.setData('');
+          document.getElementById('image').value = null;
+          document.getElementById("output").removeAttribute('src');
+          //hiển thị hình ảnh
+
+          //hiển thị nút save
+           $('#save').removeClass("d-none")
+
+           $('#rateStar').addClass("d-none")
+            $('#content').empty();
+     }
+</script>
+}

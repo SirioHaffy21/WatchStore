@@ -1,0 +1,71 @@
+﻿@model WatchManageStore.Models.Post
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Create";
+}
+
+
+<h4>Create Post</h4>
+<hr />
+<div class="row " >
+    <div class="col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea asp-for="Content" class="form-control"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Image</label>
+                <input type="file" id="image" name="image" multiple onchange="loadFile(event)" class="form-control" accept="image/*" />
+                <span asp-validation-for="Image1" class="text-danger"></span>
+                <img id="output" height="100" width="190" />
+                @*<img type="image" id='imageShow' src="/imgs/@Model.Image1" height="100" width="190" />*@
+                <input type="text" hidden id='imageData' name="imageData" />
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a class="btn btn-primary" asp-action="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    ClassicEditor
+        .create(document.querySelector('#Content'))
+        .then(editor => {
+            window.editor = editor;
+            myEditor = editor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    var loadFile = function (event) {
+        //hiển thị hình ảnh
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('output');
+            output.src = reader.result;
+            files = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
+</script>
+}

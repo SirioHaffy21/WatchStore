@@ -1,0 +1,50 @@
+﻿@model WatchManageStore.Models.Brand
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Edit";
+}
+
+<h4>Edit Brand</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="BrandId" />
+            <div class="form-group">
+                <label asp-for="BrandName" class="control-label"></label>
+                <input asp-for="BrandName" class="form-control" />
+            </div>
+            <div class="form-group mb-3 mt-3">
+                 <label class="control-label">Image</label>
+                <input type="file" id="file" name="file" multiple onchange="loadFile(event)" class="form-control" accept="image/*" />
+                <img class="d-none" id="output" height="100" width="190" />
+                <img type="image" id="imageShow" src="/imgs/@Model.Image" height="100" width="190" />
+                 <input type="text" hidden id="image" name="image" value="@Model.Image" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                  <a class="btn btn-primary" asp-action="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+          //image
+    var loadFile = function (event) {
+        $('#imageShow').addClass("d-none")
+        $('#output').removeClass("d-none")
+        //hiển thị hình ảnh
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('output');
+            output.src = reader.result;
+            files = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
+    </script>
+}

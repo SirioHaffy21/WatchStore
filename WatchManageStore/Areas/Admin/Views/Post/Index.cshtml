@@ -1,0 +1,106 @@
+﻿@model IEnumerable<WatchManageStore.Areas.Admin.Models.PostVM>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+    var delete = TempData["Delete"];
+    var update = TempData["Update"];
+    var create = TempData["Create"];
+}
+<input hidden id="delete" value="@delete" />
+<input hidden id="update" value="@update" />
+<input hidden id="create" value="@create" />
+<a class="btn btn-success mt-2" asp-area="Admin" asp-controller="Post" asp-action="Create">Create Post </a>
+<table class="table m-auto">
+    <thead>
+        <tr>
+            <th class="col-4">
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateOn)
+            </th>
+            <th>
+                Image
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @{
+                        if (@item.Status)
+                        {
+                            <p class="bg-primary rounded text-center text-light w-75">Public</p>
+                        }
+                        else
+                        {
+                            <p class="bg-danger rounded text-center text-light w-75">Non Public</p>
+                        }
+                    }
+                </td>
+                <td>
+                    @item.CreateOn.ToString("dd-MM-yyyy")
+                </td>
+                @*<td>
+                       @item.ModifyDate.ToString("dd-MM-yyyy")
+                    </td>*@
+                <td>
+                    <img src="/imgs/@item.Image1" width="80" height="50" />
+                </td>
+                <td>
+                    <a class="btn btn-warning mt-2" asp-action="Edit" asp-route-id="@item.PostId">Edit</a>
+                    <a class="btn btn-primary mt-2" asp-action="Details" asp-route-id="@item.PostId">Details</a>
+                    <a class="btn btn-danger btnDelete mt-2" data-id="@item.PostId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form id="deleteForm" action="/Admin/Post/Delete">
+    <input type="hidden" id="postDeleteId" name="Id" />
+</form>
+@section scripts{
+    <script>
+        //thong bao cho nguoi dung create, delte, update
+        var del = $('#delete').val();
+        var create = $('#create').val();
+        var update = $('#update').val();
+        $('.table').DataTable();
+        if (create) {
+            toastr.success(create, { timeOut: 800 })
+        }
+        if (del) {
+            toastr.error(del, 'Success Alert', { timeOut: 800 })
+        }
+        if (update) {
+            toastr.success(update, { timeOut: 800 })
+        }
+        //btn delete
+        $(document).on('click', '.btnDelete', function () {
+            swal({
+                title: "Are you sure?",
+                text: "Are you sure you want to delete this record?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            }).then((confirm) => {
+                if (confirm) {
+                    var btn = $(this);
+                    var id = btn.data("id");
+                    $('#postDeleteId').val(id);
+                    $('#deleteForm').submit();
+                }
+            });
+        });
+    </script>
+}

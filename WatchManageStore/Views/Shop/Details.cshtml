@@ -1,0 +1,154 @@
+﻿
+@using WatchManageStore.Areas.Admin.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Account> SignInManager
+@inject UserManager<Account> UserManager
+
+@model StoreVM
+@{
+
+    var id = @Model.StoreId;
+}
+
+<div class="main-content-wrap shop-page section-ptb">
+    <div class="container">
+        <div class="row product-details-inner">
+            <div class="col-lg-5 col-md-6">
+                <!-- Product Details Left -->
+                <div class="product-large-slider">
+                    <img width="350" height="350" src="~/imgs/@Model.Image" alt="">
+                </div>
+
+                <!--// Product Details Left -->
+            </div>
+
+            <div class="col-lg-7 col-md-6">
+                <div class="product-details-view-content">
+                    <div class="product-info">
+                        <h3>@Model.StoreName</h3>
+                        <div class="product-rating d-flex">
+                            <ul class="d-flex">
+                                @for (int i = 1; i <= Model.Rate; i++)
+                                {
+                                    <li><a href="#"><i class='fa fa-star'></i></a></li>
+                                }
+
+                                @for (int i = 1; i <= 5 - Model.Rate; i++)
+                                {
+                                    <li><a href="#"><i class='icon-star'></i></a></li>
+                                }
+
+                            </ul>
+                            <a href="#reviews">(<span class="count">1</span> customer review)</a>
+                        </div>
+
+                        <div class="price-box">
+                            <span class="post-date">Create On @Model.CreateOn.ToString("dd/MM/yyyy")</span>
+                        </div>
+                        <div>@Html.Raw(@Model.Description)</div>
+
+                    </div>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <div class="col-sm-11">
+                            <div class="rating_wrap mt-3">
+                                <div id="cate-rating" class="cate-rating">
+                                    <div id="rating">
+                                        <input type="radio" id="star5" name="rating" value="5" />
+                                        <label class="full star5" for="star5" title="Awesome - 5 stars"></label>
+                                        <input type="radio" id="star4" name="rating" value="4" />
+                                        <label class="full star4" for="star4" title="Pretty good - 4 stars"></label>
+                                        <input type="radio" id="star3" name="rating" value="3" />
+                                        <label class="full star3" for="star3" title="Meh - 3 stars"></label>
+                                        <input type="radio" id="star2" name="rating" value="2" />
+                                        <label class="full star2" for="star2" title="Kinda bad - 2 stars"></label>
+                                        <input type="radio" id="star1" name="rating" value="1" />
+                                        <label class="full star1" for="star1" title="Sucks big time - 1 star"></label>
+                                        <input hidden id="id" value="@Model.StoreId" />
+                                    </div>
+                                    <div class="comment-form-submit">
+                                        <input type="submit" value="Rate" class="comment-submit" id="submit" style="margin-left:30px">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        var rate;
+        $("#star1").click(function () {
+            rate = $('#star1').val();
+        });
+        $("#star2").click(function () {
+            rate = $('#star2').val();
+        });
+        $("#star3").click(function () {
+            rate = $('#star3').val();
+        });
+        $("#star4").click(function () {
+            rate = $('#star4').val();
+        });
+        $("#star5").click(function () {
+            rate = $('#star5').val();
+        });
+        var storeId = $('#id').val();
+        //gui rate
+        $("#submit").click(function () {
+            $.ajax({
+                url: '/Shop/Create',
+                type: 'post',
+                data: {
+                    storeId: storeId,
+                    rate: rate
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        alert(data.msg);
+                    } else {
+                        alert(data.msg);
+                    }
+                }
+            })
+        })
+            //for (var i = 1; i <= eID; i++) {
+            //    $('#star-' + i).addClass('vote-hover');
+            //}
+            //$('a.star').mouseenter(function () {
+            //    if ($('#cate-rating').hasClass('rating-ok') == false) {
+            //        var eID = $(this).attr('id');
+            //        eID = eID.split('-').splice(-1);
+            //        $('a.star').removeClass('vote-active');
+            //        for (var i = 1; i <= eID; i++) {
+            //            $('#star-' + i).addClass('vote-hover');
+            //        }
+            //    }
+            //}).mouseleave(function () {
+            //    if ($('#cate-rating').hasClass('rating-ok') == false) {
+            //        $('a.star').removeClass('vote-hover');
+            //    }
+            //});
+
+            ///*
+            // * Sự kiện khi cho điểm
+            // */
+            //$('a.star').click(function () {
+            //    if ($('#cate-rating').hasClass('rating-ok') == false) {
+            //        eID = $(this).attr('id');
+            //        eID = eID.split('-').splice(-1).toString();
+            //        for (var i = 1; i <= eID; i++) {
+            //            $('#star-' + i).addClass('vote-active');
+            //        }
+            //        $('p#vote-desc').html('<span class="yellow" >' + eID + ' (' + eID * 20 + '%)</span> &middot; ' + 1 + ' đánh giá');
+            //        $('#cate-rating').addClass('rating-ok');
+            //    }
+            //});
+
+    </script>
+}
